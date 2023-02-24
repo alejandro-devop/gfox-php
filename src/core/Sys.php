@@ -19,16 +19,35 @@ final class Sys {
      * @var \Alejodevop\Gfox\Core\WebApp
      */
     private static $app = null;
+    private static $startedTime = null;
+    private static $endExecution = null;
+    
 
     /**
      * Function to create the application instance.
      */
     public static function createApp(string $appDir) {
+        self::$startedTime = microtime(true);
+        ob_start();
         self::console('Creating application...');
-
         self::loadUtilities($appDir);
         self::$app = \Alejodevop\Gfox\Core\WebApp::getInstance($appDir);
         return self::$app;
+    }
+
+    public static function endExecution() {
+        self::$endExecution = microtime(true);
+        $timeDiff = self::$endExecution - self::$startedTime;
+        self::console("End execution: " . round($timeDiff, 4)) . "s";
+    }
+
+    public static function secondsToTime($s)
+    {
+        $h = floor($s / 3600);
+        $s -= $h * 3600;
+        $m = floor($s / 60);
+        $s -= $m * 60;
+        return $h.':'.sprintf('%02d', $m).':'.sprintf('%02d', $s);
     }
 
     /**

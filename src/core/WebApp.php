@@ -7,6 +7,7 @@ use Alejodevop\Gfox\Http\Response;
 use Alejodevop\Gfox\Http\Router;
 use Alejodevop\Gfox\Handlers\FileHandler;
 use Alejodevop\Gfox\Http\Server;
+use Alejodevop\YowlOrm\DBManager;
 
 /**
  * Class to handle common application behaviours
@@ -46,6 +47,8 @@ final class WebApp {
      */
     private Controller $controller;
 
+    private DBManager $dbManager;
+
     /**
      * List of the application available routes
      */
@@ -72,6 +75,20 @@ final class WebApp {
         $this->fileHandler = new FileHandler();
         $this->router = new Router();
         $this->request = new Request(new Response());
+        $this->initializeDB();  
+    }
+    
+    private function initializeDB() {
+        Sys::console("Mounting database", 2, __CLASS__);
+        $cacheDir = APP_DIR . DS . 'cache';
+        DBManager::getInstance()->loadDriver('MySql', [
+            'host' => 'localhost',
+            'user' => 'root',
+            'database' => 'iobenkyo_draft_db',
+            'password' => 'JKrules',
+            'port' => '3306',
+            'cache_dir' => $cacheDir,
+        ])->initCache(false);     
     }
 
     /**
@@ -106,8 +123,8 @@ final class WebApp {
      */
     private function beforeSend() {
         Sys::console("Preparing before send the response");
-
-        ob_clean();
+        # You can capture any previous output
+        ob_get_clean();
         $this->response->prepareContent();
     }
 
@@ -119,6 +136,7 @@ final class WebApp {
         $this->response = $this->request->run($this->controller);
         $this->beforeSend();
         $this->response->send();
+        Sys::endExecution();
     }
 
     /**

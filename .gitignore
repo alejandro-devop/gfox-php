@@ -3,3 +3,10 @@
 .phpunit.result.cache
 .phpunit.cache
 phpunit.xml.bak
+repositories.json
+switch-*.sh
+composer-dev.json
+composer-prod.json
+repositories.json
+composer-template.json
+composer-bk.json
