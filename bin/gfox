@@ -1,0 +1,18 @@
+<?php
+$vendorDir = realpath(__DIR__ . "/../vendor/autoload.php");
+require_once($vendorDir);
+
+define('APP_DIR', realpath(getcwd() . '/app'));
+
+use Alejodevop\Gfox\Core\Sys;
+
+Sys::cli(APP_DIR, $argv)->start();
+
+// $vendorDir = realpath(__DIR__ . '/../../vendor/autoload.php');
+// require_once($vendorDir);
+
+// define('PROJECT_ROOT', getcwd());
+
+// use Alejodevop\Gfox\Core\Sys;
+
+// Sys::cli(PROJECT_ROOT)->start();

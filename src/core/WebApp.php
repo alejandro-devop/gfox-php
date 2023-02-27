@@ -88,7 +88,7 @@ final class WebApp {
             'password' => 'JKrules',
             'port' => '3306',
             'cache_dir' => $cacheDir,
-        ])->initCache(false);     
+        ])->initCache(false);
     }
 
     /**

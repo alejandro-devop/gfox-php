@@ -19,6 +19,12 @@ final class Sys {
      * @var \Alejodevop\Gfox\Core\WebApp
      */
     private static $app = null;
+    /**
+     * Glocal cli application when running from the terminal.
+     *
+     * @var \Alejodevop\Gfox\Core\CliApp
+     */
+    private static $cliApp = null;
     private static $startedTime = null;
     private static $endExecution = null;
     
@@ -33,6 +39,12 @@ final class Sys {
         self::loadUtilities($appDir);
         self::$app = \Alejodevop\Gfox\Core\WebApp::getInstance($appDir);
         return self::$app;
+    }
+
+    public static function cli(string $appDir, $arguments = []): CliApp {
+        self::loadUtilities($appDir);
+        self::$cliApp = CliApp::getInstance($appDir, $arguments);
+        return self::$cliApp;
     }
 
     public static function endExecution() {
@@ -60,7 +72,9 @@ final class Sys {
         
         $currentDir = dirname(__DIR__);
         require_once(__DIR__ . '/../config/globals.php');
-        define('APP_DIR', $appDir . DS . 'app');
+        if (!defined('APP_DIR')) {
+            define('APP_DIR', $appDir . DS . 'app');
+        }
         $aliasesPath = GFOX_ROOT . DS . 'config' . DS . 'aliases.php';
         self::$aliases = include_once($aliasesPath);
     }
@@ -160,6 +174,10 @@ final class Sys {
      */
     public static function app():\Alejodevop\Gfox\Core\WebApp {
         return self::$app;
+    }
+
+    public static function cliApp():CliApp {
+        return self::$cliApp;
     }
 
     /**

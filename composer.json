@@ -1,19 +1,34 @@
 {
     "name": "alejodevop/gfox",
-    "version": "1.0.0",
     "license": "MIT",
     "autoload": {
         "psr-4": {
             "Alejodevop\\Gfox\\": "src/"
         }
     },
+    "bin": ["src/bin/gfox"],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "~/Developer/php-packages/yowl-orm",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "authors": [
         {
             "name": "Jorge Alejandro Quiroz Serna",
             "email": "alejandro.devop@gmail.com"
         }
     ],
+    "require": {
+        "alejodevop/yowl-orm": "dev-main"
+    },
     "require-dev": {
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.0",
+        "splitbrain/php-cli": "^1.2",
+        "phplucidframe/console-table": "^1.2",
+        "jfcherng/php-color-output": "^3.0"
     }
 }
