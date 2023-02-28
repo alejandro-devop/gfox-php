@@ -64,6 +64,10 @@ final class WebApp {
         $this->loadRoutes();
     }
 
+    public function getRequest(): Request {
+        return $this->request;
+    }
+
     /**
      * Function to load all application needed components
      */
@@ -75,7 +79,8 @@ final class WebApp {
         $this->fileHandler = new FileHandler();
         $this->router = new Router();
         $this->request = new Request(new Response());
-        $this->initializeDB();  
+        $this->request->init();
+        $this->initializeDB();
     }
     
     private function initializeDB() {
@@ -125,9 +130,16 @@ final class WebApp {
         Sys::console("Preparing before send the response");
         # You can capture any previous output
         ob_get_clean();
+        $this->printHeaders();
+        http_response_code($this->response->getStatusCode());
         $this->response->prepareContent();
     }
-
+    private function printHeaders() {
+        $headers = $this->response->getHeaders();
+        foreach($headers as $header=>$value) {
+            header("{$header}: {$value}");
+        }
+    }
     /**
      * Function to start the application, this triggers the controller call
      */

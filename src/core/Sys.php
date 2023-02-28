@@ -1,6 +1,8 @@
 <?php
 
 namespace Alejodevop\Gfox\Core;
+use Dotenv\Dotenv;
+
 
 /**
  * This class contains essential methods for the running evironment.
@@ -33,12 +35,24 @@ final class Sys {
      * Function to create the application instance.
      */
     public static function createApp(string $appDir) {
+        self::loadEnv($appDir);
+        $timeZone = $_ENV['TIME_ZONE'] ?? '';
+        date_default_timezone_set($timeZone);
         self::$startedTime = microtime(true);
         ob_start();
         self::console('Creating application...');
         self::loadUtilities($appDir);
         self::$app = \Alejodevop\Gfox\Core\WebApp::getInstance($appDir);
         return self::$app;
+    }
+
+    private static function loadEnv($appDir) {
+        $dotenv = Dotenv::createImmutable($appDir);
+        $dotenv->load();
+    }
+
+    public static function env($env, $default = null) {
+        return $_ENV[$env]?? $default;
     }
 
     public static function cli(string $appDir, $arguments = []): CliApp {

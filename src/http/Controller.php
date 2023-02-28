@@ -12,9 +12,9 @@ use Alejodevop\Gfox\Core\Sys;
  */
 abstract class Controller  extends AppComponent {
     protected $ID = 'Controller';
+    protected $middlewares = [];
 
     public function init() {
         Sys::console("Initializing $this->ID", 2, __CLASS__);
     }
-
 }

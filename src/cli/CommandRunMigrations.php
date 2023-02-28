@@ -26,7 +26,7 @@ class CommandRunMigrations extends Command {
             $this->log("Running $file...");
             $migration = $this->loadMigration($file);
             $bluePrint = $migration->mount(new Blueprint());
-            if ($bluePrint->getTableCreator()) {
+            if ($this->buildFromBluePrint($bluePrint)) {
                 $this->log(CliColor::color("[OK]", ['b_green']));
                 Sys::cliApp()->getMigrationManager()->registerMigration($file);
             }

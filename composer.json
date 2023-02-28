@@ -23,7 +23,9 @@
         }
     ],
     "require": {
-        "alejodevop/yowl-orm": "dev-main"
+        "alejodevop/yowl-orm": "dev-main",
+        "firebase/php-jwt": "^6.4",
+        "vlucas/phpdotenv": "^5.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",

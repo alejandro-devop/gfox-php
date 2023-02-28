@@ -48,11 +48,15 @@ class Blueprint {
     }
 
     public function text($name): Blueprint {
-        return $this->addField($name, DBTableCreator::STRING_FIELD);
+        return $this->addField($name, DBTableCreator::STRING_FIELD, ['size' => 255]);
     }
 
     public function int($name): Blueprint {
         return $this->addField($name, DBTableCreator::INT_FIELD);
+    }
+
+    public function bigInt($name): Blueprint {
+        return $this->addField($name, DBTableCreator::BIG_INT);
     }
 
     public function date($name): Blueprint {
@@ -65,6 +69,30 @@ class Blueprint {
 
     public function longText($name): Blueprint {
         return $this->addField($name, DBTableCreator::TEXT_FIELD, ['size' => 500]);
+    }
+
+    public function dateTime($name): Blueprint {
+        return $this->addField($name, DBTableCreator::TEXT_FIELD, []);
+    }
+
+    public function unique(): Blueprint {
+        $this->tableCreator->modifyField($this->activeField, ['unique' => true]);
+        return $this;
+    }
+
+
+    public function bigIntId($name) {
+        $this->activeField = $name;
+        $this->tableCreator->pkBigInt($name);
+        return $this;
+    }
+
+    public function rel($targetTable, $targetTablePK = 'id'): Blueprint {
+        return $this;
+    }
+
+    public function timestamp($name) {
+        return $this->addField($name, DBTableCreator::TIMESTAMP_FIELD, []);
     }
 
     public function id($name = 'id', bool $uuid = false) {

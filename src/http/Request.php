@@ -1,8 +1,11 @@
 <?php
 namespace  Alejodevop\Gfox\Http;
 
+use Alejodevop\Gfox\Auth\AuthenticatedMiddleWare;
 use Alejodevop\Gfox\Core\AppComponent;
+use Alejodevop\Gfox\Core\Middleware;
 use Alejodevop\Gfox\core\Sys;
+use Alejodevop\Gfox\Database\AuthUser;
 use Alejodevop\Gfox\Exception\HttpActionNotExistException;
 use Alejodevop\Gfox\Exception\HttpNotValidResponseException;
 use Alejodevop\Gfox\Exception\SysFilePathNotFoundExeption;
@@ -19,11 +22,24 @@ class Request extends AppComponent{
      * @var string
      */
     private ?string $type;
+    private AuthUser $user;
+    private $host;
+    private $cacheControl;
+    private $browser;
+    private $platform;
+    private $authType;
+    private $authToken;
+    private $userAgent;
+    private $accept;
     /**
      * Name of the controller to be invoked
      * @var string
      */
     private ?string $controller;
+    private ?array $middlewares;
+    private array $registeredMiddlewares = [
+        'auth' => AuthenticatedMiddleWare::class
+    ];
     /**
      * Name of the action to be invoked
      * @var string
@@ -52,9 +68,36 @@ class Request extends AppComponent{
             'controller' => $this->controller, 
             'action' => $this->action
         ] = $currentRoute;
+        $this->middlewares = $currentRoute['middlewares'] ?? null;
     }
 
-    public function init() {}
+    public function init() {
+        $this->extractHeaders();
+    }
+
+    private function extractHeaders() {
+        $headers = getallheaders();
+        $this->host = $headers['Host']?? '';
+        $this->cacheControl = $headers['Cache-Control']?? '';
+        $auth = explode(' ', $headers['Authorization']?? '');
+        $this->authType = $auth[0] ?? '';
+        $this->authToken = $auth[1]?? '';
+    }
+
+    public function getAuthInfo() {
+        return [
+            'authType' => $this->authType,
+            'authToken' => $this->authToken
+        ];
+    }
+
+    public function getAuthToken() {
+        return $this->authToken;
+    }
+
+    public function getAuthType() {
+        return $this->authType;
+    }
 
     /**
      * Getter for type of request
@@ -113,12 +156,36 @@ class Request extends AppComponent{
         }
     }
 
+    protected function loadMiddleware($middlewareName): Middleware {
+        if (!key_exists($middlewareName, $this->registeredMiddlewares)) {
+            throw new \Exception("Middlewrare $middlewareName  does not exists");
+        }
+        $className = $this->registeredMiddlewares[$middlewareName];
+        $middleware = new $className();
+        return $middleware;
+    }
+
     /**
      * Function to execute the controller and capture the respnose send by this execution.
      * @return Response
      */
     public function run(Controller $controller): Response {
         Sys::console("Running the request");
+        if (!is_null($this->middlewares)) {
+            $middlewareResponse = null;
+            foreach($this->middlewares as $middlewareName) {
+                $middleware = $this->loadMiddleware($middlewareName);
+                $valid = $middleware->beforeRequest();
+                if (!$valid) {
+                    $middlewareResponse = $middleware->getResponse();
+                    break;
+                }
+            }
+            if (!is_null($middlewareResponse) && $middlewareResponse instanceof Response) {
+                return $middlewareResponse;
+            }
+        }
+
         $response = call_user_func_array([$controller, $this->action], []);
         if (!$response instanceof Response) {
             throw new HttpNotValidResponseException("Not a valid response");

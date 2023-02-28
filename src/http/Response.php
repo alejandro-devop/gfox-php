@@ -14,17 +14,40 @@ use Alejodevop\Gfox\Core\AppComponent;
 class Response extends AppComponent{
     private $output;
     private $content;
-    public function __construct(string $responseText = "") {
+    protected $statusCode = 200;
+    public const CONTENT_JSON = 'application/json';
+    protected array $headers = [
+        'Content-Type' => 'text/html',
+    ];
+    public function __construct(mixed $responseText = "") {
         parent::__construct('AppResponse');
         $this->output = $responseText;
     }
 
     public function init() {}
+    
+    public function setHeader($header, $value): Response {
+        $this->headers[$header] = $value;
+        return $this;
+    }
 
     public function prepareContent() {
         ob_start();
         echo $this->output;
         $this->content = ob_get_clean();
+    }
+
+    public function getHeaders() {
+        return $this->headers;
+    }
+
+    public function statusCode($statusCode): Response {
+        $this->statusCode = $statusCode;
+        return $this;
+    }
+
+    public function getStatusCode() {
+        return $this->statusCode;
     }
 
     public function send() {
