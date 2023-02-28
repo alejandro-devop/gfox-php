@@ -10,6 +10,7 @@ use Alejodevop\YowlOrm\Model;
  * @property mixed $token
  * @property mixed $refresh
  * @property mixed $expiresAt
+ * @property mixed $revoked
  */
 class AuthToken extends Model {
     protected string $table = 'auth_token';

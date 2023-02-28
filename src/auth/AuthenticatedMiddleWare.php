@@ -16,6 +16,7 @@ class AuthenticatedMiddleWare extends Middleware {
         if ($authType === 'Bearer' && $authToken !== '') {
             $tokenInDB = AuthToken::search()
                 ->equals('token', $authToken)
+                ->equals('revoked', '0')
                 ->first();
             if (!is_null($tokenInDB) && $tokenInDB instanceof AuthToken) {
                 $exp = $tokenInDB->expiresAt;

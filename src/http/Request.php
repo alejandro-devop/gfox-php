@@ -31,6 +31,7 @@ class Request extends AppComponent{
     private $authToken;
     private $userAgent;
     private $accept;
+    private $body = '';
     /**
      * Name of the controller to be invoked
      * @var string
@@ -73,6 +74,17 @@ class Request extends AppComponent{
 
     public function init() {
         $this->extractHeaders();
+        $this->body = file_get_contents('php://input');
+    }
+
+    public function get($data) {
+        echo "About to get a property: $data";
+        exit();
+    }
+
+    public function body() {
+        $data = json_decode($this->body, true);
+        return $data;
     }
 
     private function extractHeaders() {

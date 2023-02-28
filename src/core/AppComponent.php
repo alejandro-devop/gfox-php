@@ -21,7 +21,7 @@ abstract class AppComponent {
     /**
      * Every component should be able to access a request component
      */
-    private ?Request $request;
+    protected ?Request $request;
 
     public function __construct(string $ID, ?Request $request = null){
         $this->ID = $ID;
