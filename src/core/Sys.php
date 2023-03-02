@@ -85,7 +85,7 @@ final class Sys {
         self::console(['Globals', 'App root', 'Aliases'], 1);
         
         $currentDir = dirname(__DIR__);
-        require_once(__DIR__ . '/../config/globals.php');
+        require_once(__DIR__ . '/../Config/globals.php');
         if (!defined('APP_DIR')) {
             define('APP_DIR', $appDir . DS . 'app');
         }

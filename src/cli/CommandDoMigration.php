@@ -16,10 +16,10 @@ class CommandDoMigration extends Command {
         $migrationName = $this->getMigrationName();
         $fileName = "{$migrationNumber}_{$migrationName}";
         $className = $this->dashesToCamelCase($migrationName, true);
-        if (!Sys::fileExists('core.templates.migration', 'template')) {
+        if (!Sys::fileExists('core.Templates.migration', 'template')) {
             throw new \Exception('Migration template does not exist');
         } 
-        $templateFile = Sys::resolvePath('core.templates.migration', true, 'template');
+        $templateFile = Sys::resolvePath('core.Templates.migration', true, 'template');
         $templateContent = file_get_contents($templateFile);
         $output = str_replace('%MIGRATION_NAME%', $className, $templateContent);
         $destDir = $this->migrationsDir . DS . $fileName . ".php";

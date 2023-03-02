@@ -19,7 +19,7 @@ class CommandCreateModel extends Command {
         foreach($fields as $field=>$fieldConfig) {
             $fieldsContent[] = " * @property mixed \$" . $this->dashesToCamelCase($field);
         }
-        $templateFile = Sys::resolvePath('core.templates.model', true, 'template');
+        $templateFile = Sys::resolvePath('core.Templates.model', true, 'template');
         $content = file_get_contents($templateFile);
         $content = str_replace('%ATTRIBUTES%', implode("\n", $fieldsContent), $content);
         $content = str_replace('%MODEL_NAME%', $className, $content);
