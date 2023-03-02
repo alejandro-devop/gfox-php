@@ -6,16 +6,6 @@
             "Alejodevop\\Gfox\\": "src/"
         }
     },
-    "bin": ["src/bin/gfox"],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "~/Developer/php-packages/yowl-orm",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
     "authors": [
         {
             "name": "Jorge Alejandro Quiroz Serna",
