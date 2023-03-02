@@ -137,7 +137,7 @@ class Request extends AppComponent{
      * @return Controller
      */
     public function loadController(): Controller {
-        $path = "app.controller.$this->controller";
+        $path = "app.Controller.$this->controller";
         if (!Sys::fileExists($path)) {
             throw new SysFilePathNotFoundExeption("The file: $path does not exists");
         }
