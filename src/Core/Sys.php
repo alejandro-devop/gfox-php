@@ -89,7 +89,7 @@ final class Sys {
         if (!defined('APP_DIR')) {
             define('APP_DIR', $appDir . DS . 'app');
         }
-        $aliasesPath = GFOX_ROOT . DS . 'config' . DS . 'aliases.php';
+        $aliasesPath = GFOX_ROOT . DS . 'Config' . DS . 'aliases.php';
         self::$aliases = include_once($aliasesPath);
     }
 
