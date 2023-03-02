@@ -1,5 +1,7 @@
 <?php
-$vendorDir = realpath(__DIR__ . "/../vendor/autoload.php");
+#$vendorDir = realpath(__DIR__ . "/../vendor/autoload.php");
+$vendorDir = realpath(__DIR__ . '/../../../autoload.php');
+
 require_once($vendorDir);
 
 define('APP_DIR', realpath(getcwd() . '/app'));
