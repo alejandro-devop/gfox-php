@@ -57,6 +57,7 @@ final class Sys {
 
     public static function cli(string $appDir, $arguments = []): CliApp {
         self::loadUtilities($appDir);
+        self::loadEnv($appDir);
         self::$cliApp = CliApp::getInstance($appDir, $arguments);
         return self::$cliApp;
     }
