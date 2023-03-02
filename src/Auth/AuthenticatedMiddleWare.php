@@ -13,6 +13,7 @@ class AuthenticatedMiddleWare extends Middleware {
             'authType' => $authType, 
             'authToken' => $authToken
         ] = Sys::app()->getRequest()->getAuthInfo();
+        
         if ($authType === 'Bearer' && $authToken !== '') {
             $tokenInDB = AuthToken::search()
                 ->equals('token', $authToken)
@@ -38,6 +39,11 @@ class AuthenticatedMiddleWare extends Middleware {
                 ]))
                 ->statusCode(401);
             }
+        } else {
+            $this->response = (new JSONResponse([
+                'error' => true,
+                'message' => 'Unauthenticated'
+            ]));
         }
         return $valid;
     }
