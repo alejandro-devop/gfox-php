@@ -87,11 +87,11 @@ final class WebApp {
         Sys::console("Mounting database", 2, __CLASS__);
         $cacheDir = APP_DIR . DS . 'cache';
         DBManager::getInstance()->loadDriver('MySql', [
-            'host' => 'localhost',
-            'user' => 'root',
-            'database' => 'iobenkyo_draft_db',
-            'password' => 'JKrules',
-            'port' => '3306',
+            'host' => Sys::env('DB_HOST', 'localhost'),
+            'user' => Sys::env('DB_USER', 'root'),
+            'database' => Sys::env('DB_NAME', 'iobenkyo_draft_db'),
+            'password' => Sys::env('DB_PASSWORD', 'JKrules'),
+            'port' => Sys::env('DB_PORT', '3306'),
             'cache_dir' => $cacheDir,
         ])->initCache(false);
     }
