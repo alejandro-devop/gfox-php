@@ -202,16 +202,16 @@ final class Sys {
      * @param string $class The class name which reports the log
      */
     public static function console($log, $levels = 0, $class = __CLASS__) {
-        $tabs = str_repeat("\t", $levels);
-        $colorOpen = "\033[32m";
-        $colorClose = "\033[0m";
-        if (is_array($log)) {
-            foreach($log as $message) {
-                error_log("$colorOpen $tabs|... [$class]: $message $colorClose");
-            }
-        } else {
-            error_log("$colorOpen $tabs|... [$class]: $log $colorClose");
-        }
+        // $tabs = str_repeat("\t", $levels);
+        // $colorOpen = "\033[32m";
+        // $colorClose = "\033[0m";
+        // if (is_array($log)) {
+        //     foreach($log as $message) {
+        //         error_log("$colorOpen $tabs|... [$class]: $message $colorClose");
+        //     }
+        // } else {
+        //     error_log("$colorOpen $tabs|... [$class]: $log $colorClose");
+        // }
     }
 
     /**
