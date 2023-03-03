@@ -34,7 +34,7 @@ class Auth {
                 if ($previousToken !== NULL && $previousToken instanceof AuthToken) {
                     # $previousToken->revoked = 1;
                     # $previousToken->save();
-                    $previousToken->delete();
+                    // $previousToken->delete();
                 }
                 $newToken = new AuthToken();
                 $newToken->userId = $user->id;
